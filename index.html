@@ -6,178 +6,500 @@
     <title>代理客户端下载中心</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-        
         * {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
         }
-        
+
+        :root {
+            --primary-cyan: #00d9ff;
+            --primary-green: #00ff88;
+            --accent-purple: #a855f7;
+            --accent-pink: #ec4899;
+            --bg-dark: #0a0a0f;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+        }
+
         body {
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            background: var(--bg-dark);
             min-height: 100vh;
+            overflow-x: hidden;
         }
-        
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 217, 255, 0.15), transparent),
+                radial-gradient(ellipse 60% 40% at 80% 100%, rgba(168, 85, 247, 0.1), transparent),
+                radial-gradient(ellipse 50% 30% at 10% 80%, rgba(0, 255, 136, 0.08), transparent);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+
         .gradient-text {
-            background: linear-gradient(135deg, #00d9ff 0%, #00ff88 50%, #00d9ff 100%);
+            background: linear-gradient(135deg, var(--primary-cyan) 0%, var(--primary-green) 50%, var(--primary-cyan) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             background-size: 200% 200%;
-            animation: gradient-shift 3s ease infinite;
+            animation: gradient-shift 4s ease infinite;
         }
-        
+
         @keyframes gradient-shift {
             0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
         }
-        
+
         .glass-card {
-            background: rgba(255, 255, 255, 0.03);
+            background: var(--bg-card);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s ease;
+            border: 1px solid var(--border-subtle);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
-        
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+            transition: left 0.5s;
+        }
+
+        .glass-card:hover::before {
+            left: 100%;
+        }
+
         .glass-card:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(0, 217, 255, 0.3);
-            transform: translateY(-2px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 217, 255, 0.25);
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 0, 0, 0.5),
+                0 0 40px rgba(0, 217, 255, 0.1);
         }
-        
-        .glow-cyan {
-            box-shadow: 0 0 40px rgba(0, 217, 255, 0.15);
-        }
-        
+
         .platform-icon {
-            width: 48px;
-            height: 48px;
+            width: 56px;
+            height: 56px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 12px;
-            font-size: 24px;
+            border-radius: 16px;
+            font-size: 26px;
+            position: relative;
         }
-        
+
+        .platform-icon::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-green));
+            z-index: -1;
+            opacity: 0.5;
+            filter: blur(8px);
+        }
+
         .android-icon {
-            background: linear-gradient(135deg, #3ddc84 0%, #00d9ff 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%);
+            color: #3ddc84;
         }
-        
+
         .windows-icon {
-            background: linear-gradient(135deg, #00a1f1 0%, #0078d4 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%);
+            color: #00a1f1;
         }
-        
+
         .macos-icon {
-            background: linear-gradient(135deg, #888 0%, #555 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%);
+            color: #a8a8a8;
         }
-        
+
         .linux-icon {
-            background: linear-gradient(135deg, #fb9b14 0%, #e65100 100%);
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%);
+            color: #fb9b14;
         }
-        
-        .ios-icon {
-            background: linear-gradient(135deg, #000 0%, #333 100%);
-        }
-        
+
         .download-btn {
-            background: linear-gradient(135deg, #00d9ff 0%, #00ff88 100%);
+            background: linear-gradient(135deg, var(--primary-cyan) 0%, var(--primary-green) 100%);
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
-        
+
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .download-btn:hover::before {
+            left: 100%;
+        }
+
         .download-btn:hover {
-            transform: scale(1.02);
-            box-shadow: 0 8px 25px rgba(0, 217, 255, 0.4);
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.35);
         }
-        
+
         .mirror-badge {
-            background: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.2) 0%, rgba(254, 202, 87, 0.2) 100%);
+            border: 1px solid rgba(255, 107, 107, 0.3);
             font-size: 10px;
-            padding: 2px 8px;
+            padding: 3px 10px;
             border-radius: 20px;
+            color: #ff6b6b;
         }
-        
+
         .loading-spinner {
             border: 3px solid rgba(255, 255, 255, 0.1);
-            border-top: 3px solid #00d9ff;
+            border-top: 3px solid var(--primary-cyan);
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
+            width: 32px;
+            height: 32px;
             animation: spin 1s linear infinite;
         }
-        
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
+
         .section-title {
             position: relative;
             display: inline-block;
+            font-weight: 700;
         }
-        
+
         .section-title::after {
             content: '';
             position: absolute;
-            bottom: -8px;
+            bottom: -10px;
             left: 0;
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-cyan), var(--primary-green));
             border-radius: 2px;
         }
-        
+
         .arch-tag {
             font-size: 11px;
-            padding: 2px 6px;
-            border-radius: 4px;
+            padding: 4px 10px;
+            border-radius: 8px;
             background: rgba(0, 217, 255, 0.1);
-            border: 1px solid rgba(0, 217, 255, 0.3);
-            color: #00d9ff;
+            border: 1px solid rgba(0, 217, 255, 0.25);
+            color: var(--primary-cyan);
+            font-weight: 500;
         }
-        
+
         .refresh-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .refresh-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--accent-purple));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .refresh-btn:hover {
+            border-color: var(--primary-cyan);
+            transform: scale(1.05);
+        }
+
+        .refresh-btn:hover::before {
+            opacity: 0.1;
+        }
+
+        .telegram-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #229ED9 0%, #0088cc 100%);
+            border-radius: 50px;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            font-size: 15px;
+            box-shadow: 
+                0 10px 30px rgba(34, 158, 217, 0.4),
+                0 0 0 0 rgba(34, 158, 217, 0.5);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 
+                    0 10px 30px rgba(34, 158, 217, 0.4),
+                    0 0 0 0 rgba(34, 158, 217, 0.5);
+            }
+            50% {
+                box-shadow: 
+                    0 10px 30px rgba(34, 158, 217, 0.4),
+                    0 0 0 15px rgba(34, 158, 217, 0);
+            }
+        }
+
+        .telegram-float:hover {
+            transform: scale(1.1) translateY(-3px);
+            box-shadow: 
+                0 20px 40px rgba(34, 158, 217, 0.5),
+                0 0 0 0 rgba(34, 158, 217, 0.5);
+            animation: none;
+        }
+
+        .telegram-float .telegram-icon {
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .telegram-tooltip {
+            position: absolute;
+            right: calc(100% + 15px);
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .telegram-float:hover .telegram-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .hero-glow {
+            position: relative;
+        }
+
+        .hero-glow::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary-cyan);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .original-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             transition: all 0.3s ease;
         }
-        
-        .refresh-btn:hover {
-            background: rgba(0, 217, 255, 0.2);
-            border-color: #00d9ff;
+
+        .original-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .version-badge {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            color: #a855f7;
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .platform-section {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .platform-section:nth-child(1) { animation-delay: 0.1s; }
+        .platform-section:nth-child(2) { animation-delay: 0.2s; }
+        .platform-section:nth-child(3) { animation-delay: 0.3s; }
+        .platform-section:nth-child(4) { animation-delay: 0.4s; }
+
+        @media (max-width: 768px) {
+            .telegram-float {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+
+            .telegram-float span {
+                display: none;
+            }
+
+            .telegram-float .telegram-icon {
+                width: 36px;
+                height: 36px;
+            }
         }
     </style>
 </head>
 <body class="text-white">
-    <div class="container mx-auto px-4 py-12 max-w-6xl">
-        <header class="text-center mb-16">
-            <h1 class="text-5xl font-bold mb-4 gradient-text">代理客户端下载中心</h1>
-            <p class="text-gray-400 text-lg mb-8">自动获取 GitHub 最新版本 | 提供国内镜像加速</p>
-            <button onclick="refreshAllData()" class="refresh-btn px-6 py-2 rounded-full text-sm flex items-center gap-2 mx-auto">
+    <div class="floating-particles" id="particles"></div>
+
+    <a href="https://t.me/TuanTuan1020" target="_blank" class="telegram-float">
+        <div class="telegram-tooltip">联系我: @TuanTuan1020</div>
+        <div class="telegram-icon">
+            <i class="fab fa-telegram-plane"></i>
+        </div>
+        <span>联系我</span>
+    </a>
+
+    <div class="container mx-auto px-4 py-16 max-w-6xl">
+        <header class="text-center mb-20 hero-glow">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full border border-white/10 mb-6">
+                <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                <span class="text-sm text-gray-400">实时获取 GitHub 最新版本</span>
+            </div>
+            <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 gradient-text">代理客户端下载中心</h1>
+            <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10">
+                一站式获取最新代理客户端 | 国内镜像加速下载 | 支持多平台
+            </p>
+            <button onclick="refreshAllData()" class="refresh-btn px-8 py-3 rounded-full text-sm flex items-center gap-3 mx-auto relative overflow-hidden">
                 <i class="fas fa-sync-alt" id="refreshIcon"></i>
                 <span>刷新数据</span>
             </button>
         </header>
 
-        <div id="loading" class="flex justify-center items-center py-20">
-            <div class="loading-spinner mr-3"></div>
+        <div id="loading" class="flex flex-col justify-center items-center py-32">
+            <div class="loading-spinner mb-4"></div>
             <span class="text-gray-400">正在获取最新版本信息...</span>
         </div>
 
         <div id="content" class="hidden">
-            <div class="mb-12" id="android-section"></div>
-            <div class="mb-12" id="windows-section"></div>
-            <div class="mb-12" id="macos-section"></div>
-            <div class="mb-12" id="linux-section"></div>
+            <div class="mb-16 platform-section" id="android-section"></div>
+            <div class="mb-16 platform-section" id="windows-section"></div>
+            <div class="mb-16 platform-section" id="macos-section"></div>
+            <div class="mb-16 platform-section" id="linux-section"></div>
         </div>
 
-        <footer class="text-center text-gray-500 text-sm mt-16 pb-8">
-            <p>数据来源于 GitHub 官方 Releases | 仅供学习交流使用</p>
-            <p class="mt-2">如遇下载问题，请尝试更换镜像源</p>
+        <footer class="text-center text-gray-500 text-sm mt-20 pb-8">
+            <p class="mb-2">数据来源于 GitHub 官方 Releases，仅供学习交流使用</p>
+            <p>如遇下载问题，请尝试更换镜像源或联系作者</p>
         </footer>
     </div>
 
     <script>
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 20;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+
+                if (Math.random() > 0.5) {
+                    particle.style.background = '#a855f7';
+                } else {
+                    particle.style.background = '#00ff88';
+                }
+
+                container.appendChild(particle);
+            }
+        }
+
+        createParticles();
+
         const MIRRORS = [
             { name: 'ghproxy', url: 'https://mirror.ghproxy.com/', prefix: '' },
             { name: 'gitclone', url: 'https://gitclone.com/', prefix: 'github.com/' },
@@ -185,21 +507,21 @@
         ];
 
         const REPOS = [
-            { owner: 'MetaCubeX', name: 'ClashMetaForAndroid', platform: 'android', icon: 'fab fa-android', iconClass: 'android-icon' },
-            { owner: 'chen08209', name: 'FlClash', platform: 'android', icon: 'fab fa-android', iconClass: 'android-icon' },
-            { owner: 'clash-verge-rev', name: 'clash-verge-rev', platform: 'windows', icon: 'fab fa-windows', iconClass: 'windows-icon' },
-            { owner: 'chen08209', name: 'FlClash', platform: 'windows', icon: 'fab fa-windows', iconClass: 'windows-icon' },
-            { owner: 'mihomo-party-org', name: 'clash-party', platform: 'windows', icon: 'fab fa-windows', iconClass: 'windows-icon' },
-            { owner: 'clash-verge-rev', name: 'clash-verge-rev', platform: 'macos', icon: 'fab fa-apple', iconClass: 'macos-icon' },
-            { owner: 'chen08209', name: 'FlClash', platform: 'macos', icon: 'fab fa-apple', iconClass: 'macos-icon' },
-            { owner: 'MetaCubeX', name: 'ClashMetaForAndroid', platform: 'linux', icon: 'fab fa-linux', iconClass: 'linux-icon' },
-            { owner: 'clash-verge-rev', name: 'clash-verge-rev', platform: 'linux', icon: 'fab fa-linux', iconClass: 'linux-icon' }
+            { owner: 'MetaCubeX', name: 'ClashMetaForAndroid', platform: 'android' },
+            { owner: 'chen08209', name: 'FlClash', platform: 'android' },
+            { owner: 'clash-verge-rev', name: 'clash-verge-rev', platform: 'windows' },
+            { owner: 'chen08209', name: 'FlClash', platform: 'windows' },
+            { owner: 'mihomo-party-org', name: 'clash-party', platform: 'windows' },
+            { owner: 'clash-verge-rev', name: 'clash-verge-rev', platform: 'macos' },
+            { owner: 'chen08209', name: 'FlClash', platform: 'macos' },
+            { owner: 'MetaCubeX', name: 'ClashMetaForAndroid', platform: 'linux' },
+            { owner: 'clash-verge-rev', name: 'clash-verge-rev', platform: 'linux' }
         ];
 
         const PLATFORM_NAMES = {
             android: 'Android',
             windows: 'Windows',
-            macos: 'MacOS',
+            macos: 'macOS',
             linux: 'Linux'
         };
 
@@ -219,15 +541,13 @@
 
         function getMirrorUrl(githubUrl) {
             const mirror = MIRRORS[0];
-            let mirrorUrl = mirror.url;
-            
             let path = githubUrl.replace('https://github.com/', '');
             
             if (mirror.prefix) {
                 path = path.replace('github.com/', mirror.prefix);
             }
             
-            return mirrorUrl + path;
+            return mirror.url + path;
         }
 
         function getArchTag(filename) {
@@ -264,18 +584,10 @@
             }
         }
 
-        function getFileDisplayName(filename, repo, version) {
-            const name = repo.name;
-            const versionStr = version.replace('v', '');
-            return `${name} ${versionStr}`;
-        }
-
         async function fetchRepoReleases(owner, name) {
             try {
                 const response = await fetch(`https://api.github.com/repos/${owner}/${name}/releases/latest`);
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 return await response.json();
             } catch (error) {
                 console.error(`Failed to fetch ${owner}/${name}:`, error);
@@ -373,20 +685,28 @@
 
                 if (platformData.length > 0) {
                     let html = `
-                        <div class="flex items-center gap-4 mb-6">
+                        <div class="flex items-center gap-5 mb-8">
                             <div class="platform-icon ${PLATFORM_ICON_CLASSES[platform]}">
                                 ${PLATFORM_ICONS[platform]}
                             </div>
-                            <h2 class="text-2xl font-bold section-title">${PLATFORM_NAMES[platform]}</h2>
+                            <div>
+                                <h2 class="text-3xl font-bold section-title">${PLATFORM_NAMES[platform]}</h2>
+                                <p class="text-gray-500 text-sm mt-2">${platformData.length} 个客户端可用</p>
+                            </div>
                         </div>
-                        <div class="grid gap-4">
+                        <div class="grid gap-5">
                     `;
 
                     platformData.forEach(project => {
+                        const versionNum = project.version.replace('v', '');
+                        
                         html += `
-                            <div class="glass-card rounded-2xl p-6 glow-cyan">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h3 class="text-xl font-semibold">${project.name} ${project.version}</h3>
+                            <div class="glass-card rounded-2xl p-6">
+                                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5">
+                                    <div class="flex items-center gap-4">
+                                        <h3 class="text-xl font-semibold text-white">${project.name}</h3>
+                                        <span class="version-badge">v${versionNum}</span>
+                                    </div>
                                 </div>
                                 <div class="grid gap-3">
                         `;
@@ -395,23 +715,24 @@
                             const archTag = platform === 'macos' ? getChipTag(asset.name) : getArchTag(asset.name);
                             const mirrorUrl = getMirrorUrl(asset.browser_download_url);
                             
-                            let buttonText = '点此下载';
+                            let buttonText = '下载';
                             if (archTag) {
-                                buttonText = `${archTag}|点此下载`;
+                                buttonText = `${archTag} | 下载`;
                             }
 
                             html += `
-                                <div class="flex items-center justify-between bg-black/20 rounded-lg p-3">
-                                    <div class="flex items-center gap-3">
-                                        <span class="text-sm text-gray-300 font-mono">${asset.name}</span>
-                                        ${archTag ? `<span class="arch-tag">${archTag}</span>` : ''}
+                                <div class="flex items-center justify-between bg-black/30 rounded-xl p-4 hover:bg-black/40 transition">
+                                    <div class="flex items-center gap-4 flex-1 min-w-0">
+                                        <i class="fas fa-file-archive text-gray-500"></i>
+                                        <span class="text-sm text-gray-300 font-mono truncate">${asset.name}</span>
+                                        ${archTag ? `<span class="arch-tag flex-shrink-0">${archTag}</span>` : ''}
                                     </div>
-                                    <div class="flex items-center gap-2">
-                                        <span class="mirror-badge">国内镜像</span>
-                                        <a href="${mirrorUrl}" target="_blank" class="download-btn px-4 py-2 rounded-lg text-sm font-medium text-black">
-                                            <i class="fas fa-download mr-1"></i>${buttonText}
+                                    <div class="flex items-center gap-3 flex-shrink-0 ml-4">
+                                        <span class="mirror-badge">国内</span>
+                                        <a href="${mirrorUrl}" target="_blank" class="download-btn px-5 py-2.5 rounded-xl text-sm font-semibold text-black whitespace-nowrap">
+                                            <i class="fas fa-download mr-2"></i>${buttonText}
                                         </a>
-                                        <a href="${asset.browser_download_url}" target="_blank" class="px-3 py-2 rounded-lg text-sm bg-white/10 hover:bg-white/20 transition">
+                                        <a href="${asset.browser_download_url}" target="_blank" class="original-btn px-4 py-2.5 rounded-xl text-sm whitespace-nowrap">
                                             <i class="fab fa-github mr-1"></i>原始
                                         </a>
                                     </div>
