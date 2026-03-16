@@ -652,6 +652,20 @@
                 <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
                 <span class="text-sm text-gray-400">实时获取 GitHub 最新版本</span>
             </div>
+            
+            <div class="mb-6">
+                <div class="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-[#1a1a2e] to-[#16213e] rounded-xl border border-white/10">
+                    <i class="fab fa-qq text-[#12B7F5] text-xl"></i>
+                    <span class="text-sm text-gray-300">QQ：</span>
+                    <div class="flex items-center gap-2">
+                        <span id="qqNumber" class="text-white font-semibold">3673464402</span>
+                        <button onclick="copyQQ()" class="copy-qq-btn p-2 rounded-full bg-white/10 hover:bg-white/20 transition flex items-center justify-center">
+                            <i class="fas fa-copy text-gray-400 hover:text-white"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
             <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 gradient-text">代理客户端下载中心</h1>
             <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10">
                 一站式获取最新代理客户端 | 国内镜像加速下载 | 支持多平台
@@ -1077,6 +1091,20 @@
             await loadAllData();
             
             refreshIcon.classList.remove('fa-spin');
+        }
+
+        function copyQQ() {
+            const qqNumber = document.getElementById('qqNumber').textContent;
+            navigator.clipboard.writeText(qqNumber).then(() => {
+                const button = document.querySelector('.copy-qq-btn');
+                const originalIcon = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check text-green-400"></i>';
+                setTimeout(() => {
+                    button.innerHTML = originalIcon;
+                }, 2000);
+            }).catch(err => {
+                console.error('复制失败:', err);
+            });
         }
 
         document.addEventListener('DOMContentLoaded', function() {
