@@ -604,8 +604,9 @@
             }
 
             .back-to-top {
-                right: 20px !important;
-                bottom: 90px !important;
+                right: 6px !important;
+                top: 20px !important;
+                bottom: auto !important;
             }
 
             .back-to-top div {
@@ -639,8 +640,8 @@
         <span>联系我</span>
     </a>
 
-    <button id="backToTop" class="back-to-top fixed bottom-20 right-30 z-9998 hidden">
-        <div class="w-12 h-12 rounded-full bg-gradient-to-r from-[#00d9ff] to-[#00ff88] flex items-center justify-center hover:scale-110 transition transform duration-300 shadow-lg shadow-[#00d9ff]/30">
+    <button id="backToTop" class="back-to-top fixed top-20 right-6 z-9999 hidden cursor-pointer">
+        <div class="w-12 h-12 rounded-full bg-gradient-to-r from-[#00d9ff] to-[#00ff88] flex items-center justify-center hover:scale-110 transition-all duration-300 shadow-lg shadow-[#00d9ff]/30">
             <i class="fas fa-arrow-up text-black font-bold"></i>
         </div>
     </button>
@@ -1084,20 +1085,23 @@
             // 回到顶部按钮逻辑
             const backToTopButton = document.getElementById('backToTop');
             
-            window.addEventListener('scroll', function() {
-                if (window.pageYOffset > 300) {
-                    backToTopButton.classList.remove('hidden');
-                } else {
-                    backToTopButton.classList.add('hidden');
-                }
-            });
-            
-            backToTopButton.addEventListener('click', function() {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
+            if (backToTopButton) {
+                window.addEventListener('scroll', function() {
+                    if (window.pageYOffset > 200) {
+                        backToTopButton.classList.remove('hidden');
+                    } else {
+                        backToTopButton.classList.add('hidden');
+                    }
                 });
-            });
+                
+                backToTopButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
             
             // 导航按钮平滑滚动
             document.querySelectorAll('.nav-btn').forEach(btn => {
