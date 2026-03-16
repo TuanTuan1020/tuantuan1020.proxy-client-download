@@ -264,6 +264,45 @@
             animation: pulse-glow 2s infinite;
         }
 
+        .contact-float {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .telegram-float-item,
+        .qq-float-item {
+            position: relative;
+            display: inline-block;
+        }
+
+        .contact-float .tooltip {
+            position: absolute;
+            right: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-right: 8px;
+            z-index: 99999;
+        }
+
+        .contact-float > *:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
         @keyframes pulse-glow {
             0%, 100% {
                 box-shadow: 
@@ -626,25 +665,46 @@
             .nav-btn i {
                 font-size: 14px !important;
             }
+
+            .contact-float {
+                right: 6px !important;
+                top: 6px !important;
+                gap: 8px !important;
+            }
+
+            .contact-float > * > div {
+                width: 44px !important;
+                height: 44px !important;
+            }
+
+            .contact-float .tooltip {
+                display: none !important;
+            }
         }
     </style>
 </head>
 <body class="text-white">
     <div class="floating-particles" id="particles"></div>
 
-    <a href="https://t.me/TuanTuan1020" target="_blank" class="telegram-float">
-        <div class="telegram-tooltip">联系我: @TuanTuan1020</div>
-        <div class="telegram-icon">
-            <i class="fab fa-telegram-plane"></i>
-        </div>
-        <span>联系我</span>
-    </a>
-
-    <button id="backToTop" class="back-to-top fixed top-6 right-6 z-[99999] hidden cursor-pointer touch-manipulation">
-        <div class="w-12 h-12 rounded-full bg-gradient-to-r from-[#00d9ff] to-[#00ff88] flex items-center justify-center hover:scale-110 transition-all duration-300 shadow-lg shadow-[#00d9ff]/30">
-            <i class="fas fa-arrow-up text-black font-bold"></i>
-        </div>
-    </button>
+    <div class="contact-float fixed top-6 right-6 z-[99999] flex flex-col gap-3">
+        <button id="backToTop" class="back-to-top hidden cursor-pointer touch-manipulation">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-r from-[#00d9ff] to-[#00ff88] flex items-center justify-center hover:scale-110 transition-all duration-300 shadow-lg shadow-[#00d9ff]/30">
+                <i class="fas fa-arrow-up text-black font-bold"></i>
+            </div>
+        </button>
+        <a href="https://t.me/TuanTuan1020" target="_blank" class="telegram-float-item">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-r from-[#229ED9] to-[#0088cc] flex items-center justify-center hover:scale-110 transition-all duration-300 shadow-lg shadow-[#229ED9]/30">
+                <i class="fab fa-telegram-plane text-white font-bold"></i>
+            </div>
+            <div class="tooltip">联系我: @TuanTuan1020</div>
+        </a>
+        <a href="javascript:void(0);" onclick="openQQ()" class="qq-float-item">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-r from-[#12B7F5] to-[#0088cc] flex items-center justify-center hover:scale-110 transition-all duration-300 shadow-lg shadow-[#12B7F5]/30">
+                <i class="fab fa-qq text-white font-bold"></i>
+            </div>
+            <div class="tooltip">QQ: 3673464402</div>
+        </a>
+    </div>
 
     <div class="container mx-auto px-4 py-16 max-w-6xl">
         <header class="text-center mb-20 hero-glow">
@@ -1132,6 +1192,29 @@
                 });
             });
         });
+
+        function openQQ() {
+            const qqNumber = '3673464402';
+            
+            // 尝试使用 tencent:// 协议
+            const tencentUrl = `tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=${qqNumber}&website=qzone`;
+            
+            // 尝试使用 QQ 网页版
+            const webUrl = `https://wpa.qq.com/msgrd?v=3&uin=${qqNumber}&site=qq&menu=yes`;
+            
+            // 尝试打开 tencent:// 协议
+            try {
+                window.open(tencentUrl, '_blank');
+                // 延迟检查是否成功打开
+                setTimeout(() => {
+                    // 如果没有打开，尝试网页版
+                    window.open(webUrl, '_blank');
+                }, 1000);
+            } catch (error) {
+                // 如果出错，直接打开网页版
+                window.open(webUrl, '_blank');
+            }
+        }
     </script>
 </body>
 </html>
