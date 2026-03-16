@@ -412,6 +412,43 @@
         .platform-section:nth-child(3) { animation-delay: 0.3s; }
         .platform-section:nth-child(4) { animation-delay: 0.4s; }
 
+        .highlight-platform {
+            position: relative;
+        }
+
+        .highlight-platform::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 60%;
+            background: linear-gradient(180deg, var(--primary-cyan), var(--primary-green));
+            border-radius: 2px;
+        }
+
+        .fallback-notice {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(251, 191, 36, 0.05) 100%);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .fallback-notice i {
+            color: #fbbf24;
+            font-size: 20px;
+        }
+
+        .fallback-notice p {
+            color: #fbbf24;
+            font-size: 14px;
+        }
+
         @media (max-width: 768px) {
             .telegram-float {
                 bottom: 20px;
@@ -427,6 +464,80 @@
             .telegram-float .telegram-icon {
                 width: 36px;
                 height: 36px;
+            }
+
+            .hero-glow::before {
+                width: 300px;
+                height: 300px;
+            }
+
+            header h1 {
+                font-size: 2rem !important;
+            }
+
+            header p {
+                font-size: 1rem !important;
+                padding: 0 10px;
+            }
+
+            .glass-card {
+                padding: 16px !important;
+            }
+
+            .glass-card .flex-col {
+                gap: 12px !important;
+            }
+
+            .glass-card .flex {
+                flex-direction: column;
+                align-items: flex-start !important;
+            }
+
+            .glass-card .flex > div:first-child {
+                flex-wrap: wrap;
+            }
+
+            .glass-card .flex .flex {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .platform-icon {
+                width: 44px;
+                height: 44px;
+                font-size: 20px;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .download-btn, .original-btn {
+                width: 100%;
+                justify-content: center;
+                text-align: center;
+            }
+
+            .download-btn span:not(.fas), .original-btn span:not(.fas) {
+                display: inline;
+            }
+
+            .mirror-badge {
+                display: none;
+            }
+
+            .fallback-notice {
+                padding: 12px 16px;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .fallback-notice p {
+                font-size: 13px;
+            }
+
+            .highlight-platform::before {
+                display: none;
             }
         }
     </style>
@@ -500,6 +611,17 @@
 
         createParticles();
 
+        function showFallbackNotice() {
+            const notice = document.createElement('div');
+            notice.className = 'fallback-notice';
+            notice.innerHTML = `
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>当前使用缓存数据，如需获取最新版本请点击右上角刷新按钮</p>
+            `;
+            const content = document.getElementById('content');
+            content.insertBefore(notice, content.firstChild);
+        }
+
         const MIRRORS = [
             { name: 'ghproxy', url: 'https://mirror.ghproxy.com/', prefix: '' },
             { name: 'gitclone', url: 'https://gitclone.com/', prefix: 'github.com/' },
@@ -517,6 +639,40 @@
             { owner: 'MetaCubeX', name: 'ClashMetaForAndroid', platform: 'linux' },
             { owner: 'clash-verge-rev', name: 'clash-verge-rev', platform: 'linux' }
         ];
+
+        const FALLBACK_DATA = {
+            'MetaCubeX/ClashMetaForAndroid': {
+                tag_name: 'v2.11.24',
+                assets: [
+                    { name: 'cmfa-2.11.24-meta-arm64-v8a-release.apk', browser_download_url: 'https://github.com/MetaCubeX/ClashMetaForAndroid/releases/download/v2.11.24/cmfa-2.11.24-meta-arm64-v8a-release.apk' },
+                    { name: 'cmfa-2.11.24-meta-armeabi-v7a-release.apk', browser_download_url: 'https://github.com/MetaCubeX/ClashMetaForAndroid/releases/download/v2.11.24/cmfa-2.11.24-meta-armeabi-v7a-release.apk' }
+                ]
+            },
+            'chen08209/FlClash': {
+                tag_name: 'v0.8.92',
+                assets: [
+                    { name: 'FlClash-0.8.92-android-arm64-v8a.apk', browser_download_url: 'https://github.com/chen08209/FlClash/releases/download/v0.8.92/FlClash-0.8.92-android-arm64-v8a.apk' },
+                    { name: 'FlClash-0.8.92-android-armeabi-v7a.apk', browser_download_url: 'https://github.com/chen08209/FlClash/releases/download/v0.8.92/FlClash-0.8.92-android-armeabi-v7a.apk' },
+                    { name: 'FlClash-0.8.92-windows-amd64-setup.exe', browser_download_url: 'https://github.com/chen08209/FlClash/releases/download/v0.8.92/FlClash-0.8.92-windows-amd64-setup.exe' },
+                    { name: 'FlClash-0.8.92-macos-arm64.dmg', browser_download_url: 'https://github.com/chen08209/FlClash/releases/download/v0.8.92/FlClash-0.8.92-macos-arm64.dmg' },
+                    { name: 'FlClash-0.8.92-macos-amd64.dmg', browser_download_url: 'https://github.com/chen08209/FlClash/releases/download/v0.8.92/FlClash-0.8.92-macos-amd64.dmg' }
+                ]
+            },
+            'clash-verge-rev/clash-verge-rev': {
+                tag_name: 'v2.4.6',
+                assets: [
+                    { name: 'Clash.Verge_2.4.6_x64-setup.exe', browser_download_url: 'https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v2.4.6/Clash.Verge_2.4.6_x64-setup.exe' },
+                    { name: 'Clash.Verge_2.4.6_aarch64.dmg', browser_download_url: 'https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v2.4.6/Clash.Verge_2.4.6_aarch64.dmg' },
+                    { name: 'Clash.Verge_2.4.6_x64.dmg', browser_download_url: 'https://github.com/clash-verge-rev/clash-verge-rev/releases/download/v2.4.6/Clash.Verge_2.4.6_x64.dmg' }
+                ]
+            },
+            'mihomo-party-org/clash-party': {
+                tag_name: 'v1.9.2',
+                assets: [
+                    { name: 'clash-party-windows-1.9.2-x64-setup.exe', browser_download_url: 'https://github.com/mihomo-party-org/clash-party/releases/download/v1.9.2/clash-party-windows-1.9.2-x64-setup.exe' }
+                ]
+            }
+        };
 
         const PLATFORM_NAMES = {
             android: 'Android',
@@ -614,6 +770,20 @@
             return Object.values(grouped);
         }
 
+        function isMobile() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+        }
+
+        function getCurrentPlatform() {
+            const userAgent = navigator.userAgent.toLowerCase();
+            if (/android/i.test(userAgent)) return 'android';
+            if (/iphone|ipad|ipod/i.test(userAgent)) return 'ios';
+            if (/mac/i.test(userAgent) && !/windows/i.test(userAgent)) return 'macos';
+            if (/linux/i.test(userAgent) && !/android/i.test(userAgent)) return 'linux';
+            if (/windows/i.test(userAgent)) return 'windows';
+            return null;
+        }
+
         async function loadAllData() {
             const loading = document.getElementById('loading');
             const content = document.getElementById('content');
@@ -623,6 +793,7 @@
 
             const repos = groupByRepo(REPOS);
             const allData = {};
+            let useFallback = false;
 
             for (const repo of repos) {
                 const release = await fetchRepoReleases(repo.owner, repo.name);
@@ -634,13 +805,43 @@
                 }
             }
 
-            renderData(allData);
+            if (Object.keys(allData).length === 0) {
+                useFallback = true;
+                for (const [key, data] of Object.entries(FALLBACK_DATA)) {
+                    const [owner, name] = key.split('/');
+                    const platform = REPOS.find(r => r.owner === owner && r.name === name)?.platform || 'android';
+                    allData[key] = { release: data, platforms: [platform] };
+                }
+            }
+
+            const currentPlatform = getCurrentPlatform();
+            if (currentPlatform) {
+                highlightPlatform(currentPlatform);
+            }
+
+            renderData(allData, useFallback);
 
             loading.classList.add('hidden');
             content.classList.remove('hidden');
         }
 
-        function renderData(allData) {
+        function highlightPlatform(platform) {
+            const platforms = ['android', 'windows', 'macos', 'linux'];
+            platforms.forEach(p => {
+                const section = document.getElementById(`${p}-section`);
+                if (section) {
+                    if (p === platform) {
+                        section.classList.add('highlight-platform');
+                    }
+                }
+            });
+        }
+
+        function renderData(allData, useFallback = false) {
+            if (useFallback) {
+                showFallbackNotice();
+            }
+
             const sections = {
                 android: document.getElementById('android-section'),
                 windows: document.getElementById('windows-section'),
