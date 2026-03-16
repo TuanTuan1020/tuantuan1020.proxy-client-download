@@ -471,59 +471,114 @@
                 height: 300px;
             }
 
-            header h1 {
-                font-size: 2rem !important;
-            }
-
-            header p {
-                font-size: 1rem !important;
+            header {
                 padding: 0 10px;
             }
 
-            .glass-card {
-                padding: 16px !important;
+            header h1 {
+                font-size: 1.8rem !important;
+                line-height: 1.3;
             }
 
-            .glass-card .flex-col {
-                gap: 12px !important;
+            header p {
+                font-size: 0.9rem !important;
+                padding: 0 10px;
+                line-height: 1.5;
             }
 
-            .glass-card .flex {
-                flex-direction: column;
-                align-items: flex-start !important;
+            header .inline-flex {
+                font-size: 0.75rem;
             }
 
-            .glass-card .flex > div:first-child {
-                flex-wrap: wrap;
-            }
-
-            .glass-card .flex .flex {
-                width: 100%;
-                justify-content: space-between;
-            }
-
-            .platform-icon {
-                width: 44px;
-                height: 44px;
-                font-size: 20px;
-            }
-
-            .section-title {
-                font-size: 1.5rem;
-            }
-
-            .download-btn, .original-btn {
-                width: 100%;
-                justify-content: center;
-                text-align: center;
-            }
-
-            .download-btn span:not(.fas), .original-btn span:not(.fas) {
+            header .inline-flex span {
                 display: inline;
             }
 
+            .container {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            .platform-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+
+            .section-title {
+                font-size: 1.3rem;
+            }
+
+            .glass-card {
+                padding: 14px !important;
+                border-radius: 16px !important;
+            }
+
+            .glass-card h3 {
+                font-size: 1rem !important;
+            }
+
+            .version-badge {
+                font-size: 10px;
+                padding: 2px 8px;
+            }
+
+            .download-row {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 12px;
+                padding: 12px !important;
+            }
+
+            .file-info {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+
+            .file-info i {
+                font-size: 16px;
+            }
+
+            .file-details {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .file-details span {
+                font-size: 12px;
+            }
+
+            .arch-tag {
+                font-size: 10px;
+                padding: 2px 6px;
+                margin-top: 4px;
+                display: inline-block;
+            }
+
+            .download-actions {
+                width: 100%;
+                justify-content: flex-start;
+                gap: 8px !important;
+                flex-wrap: wrap;
+            }
+
             .mirror-badge {
-                display: none;
+                display: inline-block !important;
+                font-size: 9px;
+                padding: 2px 6px;
+            }
+
+            .download-btn, .original-btn {
+                width: auto;
+                flex: 1;
+                justify-content: center;
+                min-width: 80px;
+                padding: 8px 10px !important;
+                font-size: 12px !important;
+            }
+
+            .download-btn .btn-text {
+                display: inline;
             }
 
             .fallback-notice {
@@ -539,6 +594,37 @@
             .highlight-platform::before {
                 display: none;
             }
+
+            footer {
+                padding: 30px 15px;
+            }
+
+            footer p {
+                font-size: 12px;
+            }
+
+            .back-to-top {
+                right: 20px !important;
+                bottom: 90px !important;
+            }
+
+            .back-to-top div {
+                width: 44px !important;
+                height: 44px !important;
+            }
+
+            .nav-buttons {
+                gap: 10px !important;
+            }
+
+            .nav-btn {
+                font-size: 12px !important;
+                padding: 8px 16px !important;
+            }
+
+            .nav-btn i {
+                font-size: 14px !important;
+            }
         }
     </style>
 </head>
@@ -552,6 +638,12 @@
         </div>
         <span>联系我</span>
     </a>
+
+    <button id="backToTop" class="back-to-top fixed bottom-20 right-30 z-9998 hidden">
+        <div class="w-12 h-12 rounded-full bg-gradient-to-r from-[#00d9ff] to-[#00ff88] flex items-center justify-center hover:scale-110 transition transform duration-300 shadow-lg shadow-[#00d9ff]/30">
+            <i class="fas fa-arrow-up text-black font-bold"></i>
+        </div>
+    </button>
 
     <div class="container mx-auto px-4 py-16 max-w-6xl">
         <header class="text-center mb-20 hero-glow">
@@ -568,6 +660,25 @@
                 <span>刷新数据</span>
             </button>
         </header>
+
+        <nav class="nav-buttons flex flex-wrap justify-center gap-3 mb-16">
+            <a href="#android-section" class="nav-btn px-5 py-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition flex items-center gap-2">
+                <i class="fab fa-android text-[#3ddc84]"></i>
+                <span>Android</span>
+            </a>
+            <a href="#windows-section" class="nav-btn px-5 py-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition flex items-center gap-2">
+                <i class="fab fa-windows text-[#00a1f1]"></i>
+                <span>Windows</span>
+            </a>
+            <a href="#macos-section" class="nav-btn px-5 py-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition flex items-center gap-2">
+                <i class="fab fa-apple text-gray-400"></i>
+                <span>macOS</span>
+            </a>
+            <a href="#linux-section" class="nav-btn px-5 py-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition flex items-center gap-2">
+                <i class="fab fa-linux text-[#fb9b14]"></i>
+                <span>Linux</span>
+            </a>
+        </nav>
 
         <div id="loading" class="flex flex-col justify-center items-center py-32">
             <div class="loading-spinner mb-4"></div>
@@ -623,7 +734,7 @@
         }
 
         const MIRRORS = [
-            { name: 'ghproxy', url: 'https://mirror.ghproxy.com/', prefix: '' },
+            { name: 'ghfast', url: 'https://ghfast.top/', prefix: '' },
             { name: 'gitclone', url: 'https://gitclone.com/', prefix: 'github.com/' },
             { name: 'cfproxy', url: 'https://cfproxy.dev/', prefix: '' }
         ];
@@ -697,6 +808,9 @@
 
         function getMirrorUrl(githubUrl) {
             const mirror = MIRRORS[0];
+            if (mirror.name === 'ghfast') {
+                return mirror.url + githubUrl;
+            }
             let path = githubUrl.replace('https://github.com/', '');
             
             if (mirror.prefix) {
@@ -922,19 +1036,21 @@
                             }
 
                             html += `
-                                <div class="flex items-center justify-between bg-black/30 rounded-xl p-4 hover:bg-black/40 transition">
-                                    <div class="flex items-center gap-4 flex-1 min-w-0">
-                                        <i class="fas fa-file-archive text-gray-500"></i>
-                                        <span class="text-sm text-gray-300 font-mono truncate">${asset.name}</span>
-                                        ${archTag ? `<span class="arch-tag flex-shrink-0">${archTag}</span>` : ''}
+                                <div class="download-row flex items-center justify-between bg-black/30 rounded-xl p-4 hover:bg-black/40 transition">
+                                    <div class="file-info flex items-center gap-3 flex-1 min-w-0">
+                                        <i class="fas fa-file-archive text-gray-500 flex-shrink-0"></i>
+                                        <div class="file-details flex flex-col min-w-0">
+                                            <span class="text-sm text-gray-300 font-mono truncate">${asset.name}</span>
+                                            ${archTag ? `<span class="arch-tag flex-shrink-0">${archTag}</span>` : ''}
+                                        </div>
                                     </div>
-                                    <div class="flex items-center gap-3 flex-shrink-0 ml-4">
+                                    <div class="download-actions flex items-center gap-2 flex-shrink-0 ml-3">
                                         <span class="mirror-badge">国内</span>
-                                        <a href="${mirrorUrl}" target="_blank" class="download-btn px-5 py-2.5 rounded-xl text-sm font-semibold text-black whitespace-nowrap">
-                                            <i class="fas fa-download mr-2"></i>${buttonText}
+                                        <a href="${mirrorUrl}" target="_blank" class="download-btn px-4 py-2 rounded-xl text-sm font-semibold text-black whitespace-nowrap">
+                                            <i class="fas fa-download mr-1"></i><span class="btn-text">下载</span>
                                         </a>
-                                        <a href="${asset.browser_download_url}" target="_blank" class="original-btn px-4 py-2.5 rounded-xl text-sm whitespace-nowrap">
-                                            <i class="fab fa-github mr-1"></i>原始
+                                        <a href="${asset.browser_download_url}" target="_blank" class="original-btn px-3 py-2 rounded-xl text-sm whitespace-nowrap">
+                                            <i class="fab fa-github"></i>
                                         </a>
                                     </div>
                                 </div>
@@ -962,7 +1078,42 @@
             refreshIcon.classList.remove('fa-spin');
         }
 
-        document.addEventListener('DOMContentLoaded', loadAllData);
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAllData();
+            
+            // 回到顶部按钮逻辑
+            const backToTopButton = document.getElementById('backToTop');
+            
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopButton.classList.remove('hidden');
+                } else {
+                    backToTopButton.classList.add('hidden');
+                }
+            });
+            
+            backToTopButton.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            // 导航按钮平滑滚动
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>
