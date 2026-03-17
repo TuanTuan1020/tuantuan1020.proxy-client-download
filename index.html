@@ -175,6 +175,14 @@
             color: #ff6b6b;
         }
 
+        .recommended-badge {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(34, 197, 94, 0.2) 100%);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #10b981;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
         .loading-spinner {
             border: 3px solid rgba(255, 255, 255, 0.1);
             border-top: 3px solid var(--primary-cyan);
@@ -913,6 +921,100 @@
             return null;
         }
 
+        function getDeviceArchitecture() {
+            if (navigator.userAgent.includes('ARM64') || navigator.userAgent.includes('arm64') || navigator.platform.includes('arm64') || navigator.platform.includes('ARM64')) {
+                return 'arm64';
+            }
+            if (navigator.userAgent.includes('ARM') || navigator.userAgent.includes('arm') || navigator.platform.includes('arm') || navigator.platform.includes('ARM')) {
+                return 'arm';
+            }
+            if (navigator.userAgent.includes('Win64') || navigator.userAgent.includes('x86_64') || navigator.platform.includes('x86_64') || navigator.platform.includes('Win64')) {
+                return 'x64';
+            }
+            if (navigator.userAgent.includes('Win32') || navigator.userAgent.includes('x86') || navigator.platform.includes('x86') || navigator.platform.includes('Win32')) {
+                return 'x86';
+            }
+            return null;
+        }
+
+        function isRecommendedDownload(platform, filename) {
+            const currentPlatform = getCurrentPlatform();
+            const currentArch = getDeviceArchitecture();
+            
+            if (currentPlatform !== platform) return false;
+            
+            const lower = filename.toLowerCase();
+            
+            switch (currentPlatform) {
+                case 'android':
+                    if (currentArch === 'arm64' && (lower.includes('arm64') || lower.includes('v8a'))) return true;
+                    if (currentArch === 'arm' && (lower.includes('armeabi') || lower.includes('v7a'))) return true;
+                    break;
+                case 'windows':
+                    if (currentArch === 'x64' && (lower.includes('x64') || lower.includes('amd64'))) return true;
+                    if (currentArch === 'x86' && (lower.includes('x86') || lower.includes('i386'))) return true;
+                    break;
+                case 'macos':
+                    if (currentArch === 'arm64' && (lower.includes('arm64') || lower.includes('aarch64'))) return true;
+                    if (currentArch === 'x64' && (lower.includes('x64') || lower.includes('amd64'))) return true;
+                    break;
+                case 'linux':
+                    if (currentArch === 'arm64' && (lower.includes('arm64') || lower.includes('aarch64'))) return true;
+                    if (currentArch === 'x64' && (lower.includes('x64') || lower.includes('amd64'))) return true;
+                    break;
+            }
+            
+            return false;
+        }
+
+        function showRecommendedDownloads() {
+            const currentPlatform = getCurrentPlatform();
+            const currentArch = getDeviceArchitecture();
+            
+            if (!currentPlatform) return;
+            
+            let platformName = '设备';
+            switch (currentPlatform) {
+                case 'android': platformName = 'Android'; break;
+                case 'windows': platformName = 'Windows'; break;
+                case 'macos': platformName = 'macOS'; break;
+                case 'linux': platformName = 'Linux'; break;
+            }
+            
+            let archName = '';
+            switch (currentArch) {
+                case 'arm64': archName = 'ARM64'; break;
+                case 'arm': archName = 'ARM'; break;
+                case 'x64': archName = 'x64'; break;
+                case 'x86': archName = 'x86'; break;
+            }
+            
+            const recommendation = document.createElement('div');
+            recommendation.className = 'recommendation-notice mb-10';
+            recommendation.innerHTML = `
+                <div class="bg-gradient-to-r from-[#00d9ff]/10 to-[#00ff88]/10 rounded-2xl p-6 border border-[#00d9ff]/30">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-[#00d9ff] to-[#00ff88] flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-magic text-black font-bold"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-white mb-2">为您推荐</h3>
+                            <p class="text-gray-400 mb-4">基于您的设备自动推荐最适合的下载版本</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 rounded-full bg-white/10 text-sm">${platformName}</span>
+                                ${archName ? `<span class="px-3 py-1 rounded-full bg-white/10 text-sm">${archName}</span>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            const content = document.getElementById('content');
+            if (content) {
+                content.insertBefore(recommendation, content.firstChild);
+            }
+        }
+
         async function loadAllData() {
             const loading = document.getElementById('loading');
             const content = document.getElementById('content');
@@ -970,6 +1072,8 @@
             if (useFallback) {
                 showFallbackNotice();
             }
+            
+            showRecommendedDownloads();
 
             const sections = {
                 android: document.getElementById('android-section'),
@@ -1055,7 +1159,10 @@
                                     <div class="file-info flex items-center gap-3 flex-1 min-w-0">
                                         <i class="fas fa-file-archive text-gray-500 flex-shrink-0"></i>
                                         <div class="file-details flex flex-col min-w-0">
-                                            <span class="text-sm text-gray-300 font-mono truncate">${asset.name}</span>
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-sm text-gray-300 font-mono truncate">${asset.name}</span>
+                                                ${isRecommendedDownload(platform, asset.name) ? `<span class="recommended-badge px-2 py-1 rounded text-xs font-semibold">推荐</span>` : ''}
+                                            </div>
                                             ${archTag ? `<span class="arch-tag flex-shrink-0">${archTag}</span>` : ''}
                                         </div>
                                     </div>
